@@ -30,7 +30,7 @@ setup: setup-backend setup-frontend
 setup-backend:
 	@echo "Setting up backend..."
 	cd backend && python -m venv venv
-	cd backend && venv/Scripts/pip install -r requirements.txt || cd backend && venv/bin/pip install -r requirements.txt
+	cd backend && (venv/Scripts/pip install -r requirements.txt || venv/bin/pip install -r requirements.txt)
 	@echo "Backend setup complete!"
 
 setup-frontend:
