@@ -21,6 +21,16 @@ export function ReminderList({ onCreateClick }: ReminderListProps) {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Always fetch all reminders for accurate tab counts
+  const { data: allReminders = [] } = useQuery({
+    queryKey: ["reminders", "all"],
+    queryFn: () =>
+      api.getReminders({
+        sort_by: "scheduled_at",
+        sort_order: "asc",
+      }),
+  });
+
   const {
     data: reminders = [],
     isLoading,
@@ -49,12 +59,12 @@ export function ReminderList({ onCreateClick }: ReminderListProps) {
 
   const statusCounts = useMemo(() => {
     return {
-      all: reminders.length,
-      scheduled: reminders.filter((r) => r.status === "scheduled").length,
-      completed: reminders.filter((r) => r.status === "completed").length,
-      failed: reminders.filter((r) => r.status === "failed").length,
+      all: allReminders.length,
+      scheduled: allReminders.filter((r) => r.status === "scheduled").length,
+      completed: allReminders.filter((r) => r.status === "completed").length,
+      failed: allReminders.filter((r) => r.status === "failed").length,
     };
-  }, [reminders]);
+  }, [allReminders]);
 
   if (isError) {
     return (
