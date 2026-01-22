@@ -58,21 +58,18 @@ function getStatusConfig(status: Reminder["status"]) {
         label: "Scheduled",
         icon: Timer,
         className: "bg-sky-100 text-sky-700 border-sky-200",
-        dotColor: "bg-sky-500",
       };
     case "completed":
       return {
         label: "Completed",
         icon: CheckCircle2,
         className: "bg-emerald-100 text-emerald-700 border-emerald-200",
-        dotColor: "bg-emerald-500",
       };
     case "failed":
       return {
         label: "Failed",
         icon: XCircle,
         className: "bg-red-100 text-red-700 border-red-200",
-        dotColor: "bg-red-500",
       };
   }
 }
@@ -138,8 +135,8 @@ export function ReminderCard({ reminder }: ReminderCardProps) {
           "overflow-hidden"
         )}
       >
-        {/* Status indicator bar */}
-        <div className={cn("absolute top-0 left-0 right-0 h-1", statusConfig.dotColor)} />
+        {/* Accent bar */}
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-violet-500 to-indigo-500" />
 
         <div className="p-5 pt-6">
           {/* Header row */}
@@ -258,11 +255,13 @@ export function ReminderCard({ reminder }: ReminderCardProps) {
           <DialogHeader className="sr-only">
             <DialogTitle>Edit Reminder</DialogTitle>
           </DialogHeader>
-          <ReminderForm
-            reminder={reminder}
-            onSuccess={() => setIsEditOpen(false)}
-            onCancel={() => setIsEditOpen(false)}
-          />
+          <div className="max-h-[85vh] overflow-y-auto">
+            <ReminderForm
+              reminder={reminder}
+              onSuccess={() => setIsEditOpen(false)}
+              onCancel={() => setIsEditOpen(false)}
+            />
+          </div>
         </DialogContent>
       </Dialog>
     </>
@@ -272,7 +271,7 @@ export function ReminderCard({ reminder }: ReminderCardProps) {
 export function ReminderCardSkeleton() {
   return (
     <div className="bg-white rounded-xl border border-zinc-200/80 shadow-sm overflow-hidden">
-      <div className="h-1 bg-zinc-200 animate-pulse" />
+      <div className="h-1 bg-gradient-to-r from-violet-300 to-indigo-300 animate-pulse" />
       <div className="p-5 pt-6 space-y-4">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 space-y-2">

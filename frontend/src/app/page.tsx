@@ -64,11 +64,13 @@ export default function Home() {
 
       {/* Create Reminder Dialog */}
       <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
-        <DialogContent className="sm:max-w-lg p-0 overflow-hidden max-h-[90vh] overflow-y-auto">
+        <DialogContent className="sm:max-w-lg p-0 overflow-hidden">
           <DialogHeader className="sr-only">
             <DialogTitle>Create Reminder</DialogTitle>
           </DialogHeader>
-          <ReminderForm onSuccess={() => setIsCreateOpen(false)} />
+          <div className="max-h-[85vh] overflow-y-auto">
+            <ReminderForm onSuccess={() => setIsCreateOpen(false)} />
+          </div>
         </DialogContent>
       </Dialog>
 
