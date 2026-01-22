@@ -75,20 +75,66 @@ call-me-reminder/
 └── README.md
 ```
 
-## Setup Instructions
+## Quick Start (Using Makefile)
 
 ### Prerequisites
 
 - Python 3.11+
 - Node.js 18+
 - npm
+- Make (comes with Git Bash on Windows, or install via package manager)
 - Vapi account (free tier works)
-- Twilio account (for phone number via Vapi)
 
-### 1. Clone & Setup Backend
+### 1. Configure Vapi
+
+1. Create an account at [Vapi.ai](https://vapi.ai)
+2. Get your API key from the dashboard
+3. Create or import a phone number (Twilio integration)
+4. Copy the phone number ID
 
 ```bash
-# Navigate to backend
+# Copy and edit the environment file
+cp backend/.env.example backend/.env
+```
+
+Edit `backend/.env` with your credentials:
+```env
+VAPI_API_KEY=your_vapi_api_key_here
+VAPI_PHONE_NUMBER_ID=your_vapi_phone_number_id_here
+```
+
+### 2. Setup & Run
+
+```bash
+# Install all dependencies (backend + frontend)
+make setup
+
+# Run both servers (backend on :8000, frontend on :3000)
+make run
+```
+
+That's it! Open http://localhost:3000 in your browser.
+
+### Available Make Commands
+
+| Command | Description |
+|---------|-------------|
+| `make setup` | Install all dependencies (backend + frontend) |
+| `make run` | Run both backend and frontend servers |
+| `make run-backend` | Run backend only |
+| `make run-frontend` | Run frontend only |
+| `make clean` | Remove venv, node_modules, and database |
+| `make help` | Show all available commands |
+
+---
+
+## Manual Setup (Alternative)
+
+If you don't have `make` available, follow these steps:
+
+### 1. Setup Backend
+
+```bash
 cd backend
 
 # Create virtual environment
@@ -103,51 +149,40 @@ source venv/bin/activate
 # Install dependencies
 pip install -r requirements.txt
 
-# Copy environment file and configure
+# Copy and configure environment
 cp .env.example .env
+# Edit .env with your Vapi credentials
 ```
 
-### 2. Configure Vapi
-
-1. Create an account at [Vapi.ai](https://vapi.ai)
-2. Get your API key from the dashboard
-3. Create or import a phone number (Twilio integration)
-4. Copy the phone number ID
-
-Edit `backend/.env`:
-```env
-VAPI_API_KEY=your_vapi_api_key_here
-VAPI_PHONE_NUMBER_ID=your_vapi_phone_number_id_here
-```
-
-### 3. Start Backend
+### 2. Setup Frontend
 
 ```bash
-cd backend
-uvicorn main:app --reload --port 8000
-```
-
-The API will be available at `http://localhost:8000`
-
-API docs: `http://localhost:8000/docs`
-
-### 4. Setup Frontend
-
-```bash
-# In a new terminal, navigate to frontend
 cd frontend
 
 # Install dependencies
 npm install
 
-# Copy environment file
+# Copy environment file (optional)
 cp .env.example .env.local
+```
 
-# Start development server
+### 3. Run Servers
+
+In separate terminals:
+
+```bash
+# Terminal 1: Backend
+cd backend
+uvicorn main:app --reload --port 8000
+
+# Terminal 2: Frontend
+cd frontend
 npm run dev
 ```
 
-The frontend will be available at `http://localhost:3000`
+- Backend API: http://localhost:8000
+- Frontend: http://localhost:3000
+- API docs: http://localhost:8000/docs
 
 ## How Scheduling Works
 
@@ -159,7 +194,7 @@ The frontend will be available at `http://localhost:3000`
    - Updates status to `"completed"` or `"failed"` based on API response
 
 3. **Vapi Call Flow**:
-   - Backend sends POST to Vapi `/call/phone` endpoint
+   - Backend sends POST to Vapi `/call` endpoint with transient assistant
    - Vapi initiates outbound call to the phone number
    - AI assistant speaks the reminder message
    - Call ID is stored for reference
