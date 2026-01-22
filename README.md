@@ -46,6 +46,15 @@ Following the "minimal" principle from the assessment requirements:
 
 7. **Phone Number Formatting**: Display formatting (readable) while storing E.164 format for API compatibility.
 
+8. **No Test Suite**: Tests were intentionally skipped to keep the project minimal. In a production setting, this would include:
+   - Backend: pytest with FastAPI TestClient, testing CRUD operations, scheduler logic, and Vapi integration mocks
+   - Frontend: Jest + React Testing Library for component tests, Playwright/Cypress for E2E tests
+
+9. **No Pre-commit Hooks**: Skipped linting/formatting hooks (e.g., pre-commit, husky, lint-staged) for simplicity. Production would include:
+   - Python: black, ruff, mypy for formatting and type checking
+   - TypeScript: ESLint, Prettier for code quality
+   - Commit hooks to enforce standards before pushing
+
 ## Project Structure
 
 ```
